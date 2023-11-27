@@ -1,0 +1,37 @@
+{% extends "layout.jinja2" %}
+
+{% block content %}
+<div class="content">
+    <h1>Profile Page</h1>
+    <div>
+        <p class="lead">{{request.identity.email}}</p>
+    </div>
+
+    <div class="m-2">
+        <a class="link btn btn-danger" href="{{url_for('reset_password')}} ">Reset password</a>
+        <a class="link btn btn-warning" href="{{url_for('logout')}}">Logout</a>
+    </div>
+
+    <div class="card p-2">
+    {% if your_color %}
+        <h2>Your color is: <span class="favoriteColorText" style="background: {{your_color}};">{{your_color}}</span></h2>
+        <p>You can change it here:</p>
+    {% endif %}
+
+        <form method="post" action="{{url_for('profile')}}">
+            {% include 'hidden_fields.jinja2' %}
+            <div class="form-group">
+                <label for="color">Color</label>
+                <select name="{{form.color.name}}" class="form-control" id="{{form.color.id}}>
+                {% for choice_value, choice_label in form.color.choices %}
+                    <option value="{{choice_value}}" {% if choice_value == your_color %} selected {% endif %}>
+                        {{choice_label}}
+                    </option>
+                {% endfor %}
+            </select>
+            </div>
+            <input class="btn btn-primary btn-sm m-1" type="submit" value="Set color">
+        </form>
+    </div>
+</div>
+{% endblock content %}
